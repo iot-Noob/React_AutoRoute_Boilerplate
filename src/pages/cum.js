@@ -1,7 +1,6 @@
 import React from 'react'
-
-const Talha = ({name="talha3"}) => {
- 
+ const cum = ({names="hot cum"}) => {
+    
   return (
     <div>
       
@@ -9,4 +8,6 @@ const Talha = ({name="talha3"}) => {
   )
 }
 
-export default Talha
+export default cum
+
+
