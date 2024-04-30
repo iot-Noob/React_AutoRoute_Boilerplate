@@ -21,13 +21,13 @@ const importAll = (r) => {
   const folders = r.keys().filter((key) => key.indexOf('/') !== -1 && key.endsWith('/')).map((folder) => {
     const folderName = folder.substr(1).replace(/\/$/, '').toLowerCase().replace(/\(|\)/g, ''); // Remove parentheses
     const folderFiles = importAll(require.context(`../pages/${folderName}`, true, /\.js$/));
+ 
     
     return folderFiles.map((file) => ({
       path: `${folderName}/${file.path}`,
       name: file.pageTitle,
       component: file.component,
-       
-   
+ 
     }));
   }).flat();
 
@@ -35,5 +35,7 @@ const importAll = (r) => {
 };
 
 const routes = importAll(require.context('../pages', true, /\.js$/));
+ routes.forEach(r=>{
  
+ })
 export { routes };

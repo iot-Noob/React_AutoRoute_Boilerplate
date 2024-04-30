@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { routes } from '../container/route'; // Import routes from your route file
 
 const Navbar = () => {
   const location = useLocation();
-
+  const [name,setName]=useState([])
   return (
     <nav className="bg-gray-800 text-white py-4">
       <div className="container mx-auto">
@@ -28,8 +28,7 @@ const Navbar = () => {
                   className={`hover:text-gray-300 ${location.pathname === route.component ? 'text-gray-300' : ''}`}
                 >
                   {route.name}
-              
-
+      
                 </Link>
               </li>
             ))}
