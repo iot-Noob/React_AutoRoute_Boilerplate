@@ -1,70 +1,114 @@
-# Getting Started with Create React App
+# Dynamic Routing Documentation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This document provides a detailed explanation of the dynamic routing implementation in the Create React App project. Dynamic routing simplifies the process of managing routes by automatically importing route components from specified directories.
 
-In the project directory, you can run:
+## Implementation
 
-### `npm start`
+### Dynamic Route Path Configuration
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The dynamic route path is configured in the `src/container/route.js` file. This file contains the logic for importing route components dynamically.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```javascript
+const routes = importAll([
+  require.context('../pages', true, /\.js$/),
+]);
+```
+- The ```require.context``` function is utilized for dynamic module loading.
+- The ```../pages``` directory is specified as the source directory for route components.
+- Subdirectories are included (```true``` argument).
+- Only JavaScript files with a ```.js``` extension are considered as route components (```/\ .js$/``` regex pattern).
+#### Directory Structure
+Route components should be organized within the specified directory ```(../pages)```. Each route corresponds to a separate component file within this directory.
 
-### `npm test`
+#### Example directory structure:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```lua
+src/
+|-- pages/
+|   |-- Home.js
+|   |-- About.js
+|   |-- Contact.js
+|   |-- ...
+```
 
-### `npm run build`
+### Example Usage
+nce the dynamic route path is configured, the imported routes can be utilized within the application. For example, using React Router:
+```js
+import { Route, Routes } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import Main from "./fixroute/Main";
+import Navbar from "./component/Navbar";
+import PageLayout from "./container/PageLayout";
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+const App = () => {
+  return (
+    <>
+      <Navbar />
+      <Suspense fallback={<div className="text-center text-lg">Loading page....</div>}>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/*" element={<PageLayout />} />
+        </Routes>
+      </Suspense>
+    </>
+  );
+}
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+export default App;
+```
+- The routes array contains the dynamically imported -route components.
+- Each route component is rendered using the Route component from React Router.
+#### Additional Routing Implementation
+Here's how routing is done with the provided component structure:
+- ```src/container/PageContent.js```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```js
+import React, { lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { routes } from './route';
+import NotFoundPage from '../fixroute/NotFoundPage'; // Import your 404 page component
 
-### `npm run eject`
+const PageContent = () => {
+  return (
+    <Suspense fallback={<div className='text-center text-xl'> Loading subpage route</div>}>
+      <Routes>
+        {routes.map((route, index) => (
+          <Route key={index} path={route.path} element={<route.component />} />
+        ))}
+        {/* Route for 404 page */}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Suspense>
+  );
+};
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+export default PageContent;
+```
+- ```src/container/PageLayout.js```
+```js
+import React from 'react';
+import { lazy, Suspense } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import ErrorBoundary from '../msic/ErrorBoundary';
+const PageContent = lazy(() => import('./PageContent'));
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+const PageLayout = () => {
+  return (
+    <>
+      <ErrorBoundary>
+        <Suspense fallback={<div>Loading...</div>}>
+          <PageContent />
+        </Suspense>
+      </ErrorBoundary>
+    </>
+  );
+}
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+export default PageLayout;
+```
+## Conclusion
+Dynamic routing simplifies route management in React applications by automating the process of importing route components. By following the configuration described above, developers can easily implement dynamic routing in their projects. 
+Created by 
+M Talha Khalid IOT Noob.
