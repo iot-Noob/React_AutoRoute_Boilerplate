@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
-
 const importAll = (paths) => {
+  try{
   const allFiles = [];
 
   paths.forEach(path => {
+  
     const files = path.keys().map((key) => ({
+      
       path: key
         .substr(1)
         .replace(/\/index\.js$/, '')
@@ -19,6 +21,7 @@ const importAll = (paths) => {
         .replace(/-/g, ' ') // Replace dashes with spaces
         .replace(/\b\w/g, (char) => char.toUpperCase()), // Capitalize each word
       component: path(key).default,
+      
     }));
 
     allFiles.push(...files);
@@ -36,12 +39,14 @@ const importAll = (paths) => {
   }).flat();
 
   return [...allFiles, ...folders];
+}catch {
+  console.error(`Error occur in dynamic route `)
+}
 };
-
+ 
 const routes = importAll([
   require.context('../pages', true, /\.js$/),
-  require.context('../otherroute', true, /\.js$/)
-  // Add more require.context calls here for additional folder paths
+ 
 ]);
-
+ 
 export { routes };
