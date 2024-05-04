@@ -1,7 +1,8 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { routes } from './route';
-import NotFoundPage from '../fixroute/NotFoundPage '; // Import your 404 page component
+const NotFoundPage=lazy(()=>import('../fixroute/NotFoundPage '))
+ 
 
 const PageContent = () => {
   return (
