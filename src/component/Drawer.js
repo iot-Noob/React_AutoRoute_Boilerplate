@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { routes } from '../container/route';
 
+const names=[
+'About Boilerplate',
+'Documentation',
+'Redux Counter',
+'Show Redux Counter'
+]
 const Drawer = ({ toggleDrawer }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,7 +34,9 @@ const Drawer = ({ toggleDrawer }) => {
             <li><NavLink to={'/'}>Home</NavLink></li>
                 
             {routes.map((route, index) => (
-              <li key={index}><NavLink to={route.path}>{route.name}</NavLink></li>
+              // you can use routes.name for defaut naem fetch form file
+             // <li key={index}><NavLink to={route.path}>{route.name}</NavLink></li>
+              <li key={index}><NavLink to={route.path}>{names[index]}</NavLink></li>
             ))}
             
             {/* Footer */}
