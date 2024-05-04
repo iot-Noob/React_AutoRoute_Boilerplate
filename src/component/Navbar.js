@@ -1,41 +1,25 @@
-import React, { Component, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { routes } from '../container/route'; // Import routes from your route file
-
-const Navbar = () => {
-  const location = useLocation();
-  const [name,setName]=useState([])
+import React from 'react';
+import { useState,useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+const Navbar = ({ButtonEvent}) => {
+ 
   return (
-    <nav className="bg-gray-800 text-white py-4">
-      <div className="container mx-auto">
-        <div className="flex justify-between items-center">
-          {/* Brand/logo */}
-          <Link to="/" className="text-xl font-bold">Home</Link>
-          
-          {/* Responsive menu button */}
-          <button className="block lg:hidden focus:outline-none">
-            <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
-          
-          {/* Navbar links */}
-          <ul className="hidden lg:flex lg:space-x-4">
-            {routes.map((route, index) => (
-              <li key={index}>
-                <Link
-                  to={route.path.split(':')[0]}
-                  className={`hover:text-gray-300 ${location.pathname === route.component ? 'text-gray-300' : ''}`}
-                >
-                  {route.name}
-      
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+    <div style={{ position: 'fixed ', top: 0, left: 0, right: 0, zIndex: 100 }} className="navbar bg-base-300 cnt">
+      <div className="flex-none">
+        <button className="btn btn-square btn-ghost" onClick={ButtonEvent}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-5 h-5 stroke-current">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
       </div>
-    </nav>
+      <div className="flex-1">
+        <NavLink to={'/'} className="btn btn-ghost text-xl">Dynamic Routing</NavLink>
+    
+      </div>
+      <div className="flex-none">
+ 
+      </div>
+    </div>
   );
 };
 

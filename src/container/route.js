@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+ import { lazy } from "react";
 const importAll = (paths) => {
   try{
   const allFiles = [];
@@ -34,7 +34,7 @@ const importAll = (paths) => {
     return folderFiles.map((file) => ({
       path: `${folderName}/${file.path}`,
       name: file.pageTitle,
-      component: file.component,
+      component: lazy(()=>import(file.component)),
     }));
   }).flat();
 
