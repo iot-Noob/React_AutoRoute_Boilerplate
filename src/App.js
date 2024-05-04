@@ -5,7 +5,8 @@ import Main from './fixroute/Main';
 import Navbar from './component/Navbar';
 import Drawer from './component/Drawer';
 import PageLayout from './container/PageLayout';
-
+import Loader from './component/Loader';
+ 
 const App = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
@@ -17,7 +18,7 @@ const App = () => {
     <>
       <Navbar ButtonEvent={toggleDrawer} />
       <Drawer toggleDrawer={isDrawerOpen} />
-      <Suspense fallback={<div className="text-center text-lg">Loading page....</div>}>
+      <Suspense fallback={<Loader/>}>
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/*" element={<PageLayout />} />

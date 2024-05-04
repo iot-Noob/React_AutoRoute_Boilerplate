@@ -1,17 +1,15 @@
-import React from 'react'
-import { lazy,Suspense } from 'react'
-import { Route,Routes } from 'react-router-dom'
- 
-const PageContent=lazy(()=>import('./PageContent'))
- 
-const PageLayout = (children) => {
+import React, { lazy, Suspense } from 'react';
+import Loader from '../component/Loader';
+const PageContent = lazy(() => import('./PageContent'));
+
+const PageLayout = ({ children }) => {
   return (
-   <>
- 
-    <PageContent/>
- 
-   </>
-  )
+    <>
+      <Suspense fallback={<Loader />}>
+        <PageContent />
+      </Suspense>
+    </>
+  );
 }
 
-export default PageLayout
+export default PageLayout;
