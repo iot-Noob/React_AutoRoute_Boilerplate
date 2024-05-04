@@ -22,7 +22,6 @@ const importAll = (paths) => {
         .replace(/-/g, ' ') // Replace dashes with spaces
         .replace(/\b\w/g, (char) => char.toUpperCase()), // Capitalize each word
       component: path(key).default,
-      
     }));
 
     allFiles.push(...files);
@@ -30,8 +29,8 @@ const importAll = (paths) => {
 
   const folders = allFiles.filter((file) => file.path.indexOf('/') !== -1 && file.path.endsWith('/')).map((folder) => {
     const folderName = folder.path.substr(0, folder.path.length - 1).toLowerCase().replace(/\(|\)/g, ''); // Remove parentheses
-    const ll=lazy(()=>import(folderName))
-    const folderFiles = importAll(paths.map(path => require.context(`../${path}/${ll}`, true, /\.js$/)));
+    
+    const folderFiles = importAll(paths.map(path => require.context(`../${path}/${folderName}`, true, /\.js$/)));
     
     return folderFiles.map((file) => ({
       path: `${folderName}/${file.path}`,
