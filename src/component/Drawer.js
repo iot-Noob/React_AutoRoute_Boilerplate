@@ -5,6 +5,7 @@ import { routes } from '../container/route';
 const names=[
 'About Boilerplate',
 'Documentation',
+"About Talha",
 'Redux Counter',
 'Show Redux Counter'
 ]
